@@ -2,6 +2,7 @@ package com.adjourtechnologie.reseauenset.web;
 
 import com.adjourtechnologie.reseauenset.model.Account;
 import com.adjourtechnologie.reseauenset.model.Group;
+import com.adjourtechnologie.reseauenset.repository.GroupeRepository;
 import com.adjourtechnologie.reseauenset.service.AccountService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +15,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1.0/account_controller")
+@CrossOrigin("*")
 public class AccountControler {
     private final AccountService accountService;
+    private final GroupeRepository groupeRepository;
 
-    public AccountControler(AccountService accountService) {
+    public AccountControler(AccountService accountService, GroupeRepository groupeRepository) {
         this.accountService = accountService;
+        this.groupeRepository = groupeRepository;
     }
 
     @PostMapping("account/save")
@@ -28,7 +32,7 @@ public class AccountControler {
         return accountService.saveAccount(account);
     }
 
-    @GetMapping("account/findAll")
+    @GetMapping("account/find_all")
     public Page<Account> accountPage(Pageable pageable) {
         return accountService.findAll(pageable);
     }
@@ -52,9 +56,22 @@ public class AccountControler {
         return accountService.saveGroup(group);
     }
 
-    @GetMapping("group/findAll")
+    @GetMapping("group/find_all")
     public List<Group> groupFindAll() {
         return accountService.findAllGroup();
     }
+
+    @DeleteMapping("group/delete/{id}")
+    public void groupDelete(@PathVariable Long id) {
+        groupeRepository.deleteById(id);
+    }
+
+
+    @PostMapping("success")
+    public void success() {
+
+    }
+
+
 
 }

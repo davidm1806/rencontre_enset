@@ -27,7 +27,7 @@ public class Group {
     private String name;
     private String description;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime created_at;
+    private LocalDateTime created_at = LocalDateTime.now();
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime updated_at;
 

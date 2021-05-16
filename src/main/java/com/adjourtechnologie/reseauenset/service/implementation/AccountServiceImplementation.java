@@ -143,13 +143,13 @@ public class AccountServiceImplementation implements AccountService {
                 return ResponseEntity.unprocessableEntity().build();
 
             gp = optionalGroup.get();
-            gp.setCreated_at(LocalDateTime.now());
+            gp.setUpdated_at(LocalDateTime.now());
 
         } else {
             gp = new Group();
-            gp.setName(group.getName());
-            gp.setDescription(group.getDescription());
         }
+        gp.setName(group.getName());
+        gp.setDescription(group.getDescription());
         return ResponseEntity.ok(groupeRepository.save(gp));
     }
 
