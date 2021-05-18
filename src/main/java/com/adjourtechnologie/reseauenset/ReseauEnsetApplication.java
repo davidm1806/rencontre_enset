@@ -18,4 +18,5 @@ public class ReseauEnsetApplication {
 		return new BCryptPasswordEncoder();
 	}
 
+
 }

@@ -12,6 +12,8 @@ import java.util.List;
 public interface AccountService {
     ResponseEntity<Account> saveAccount(Account account);
     Page<Account> findAll(Pageable pageable);
+    ResponseEntity<Account> findById(Long id);
+
     void addAccountToGroup(@NonNull Long accountId, @NonNull  Long groupId);
     void removeAccountFromGroup(@NonNull Long accountId, @NonNull  Long groupId);
 

@@ -1,5 +1,6 @@
 package com.adjourtechnologie.reseauenset.model;
 
+import com.adjourtechnologie.reseauenset.model.enumeration.TypeGroup;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
@@ -24,8 +25,10 @@ public class Group {
     @EqualsAndHashCode.Include
     private Long id;
     @NotNull
+    @Column(unique = true)
     private String name;
     private String description;
+    private String typeGroup;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime created_at = LocalDateTime.now();
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")

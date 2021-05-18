@@ -32,12 +32,11 @@ public class Utilisateur implements UserDetails {
     @EqualsAndHashCode.Include
     private Long id;
     @NotBlank
+    @Column(unique = true)
     private String username;
-    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Transient
-    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordConfirm;
     private String pseudo;

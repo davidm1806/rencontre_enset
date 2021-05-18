@@ -15,6 +15,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,15 +41,15 @@ public class Account {
     @Length(max = 20)
     private String phone;
     private String address;
+    private String sexe;
     @Enumerated(EnumType.STRING)
     private StatusAccount status;
     private Boolean isActive;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateEntree;
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateDiplomation;
     private Boolean showPrivateProfile;
-    @NotNull
-    @Length(max = 18)
-    private String matricule;
     @Column(columnDefinition = "MEDIUMTEXT")
     private String photoProfile;
     private Boolean hasPhotoProfile = false;
@@ -59,12 +60,18 @@ public class Account {
     private final LocalDateTime createAt = LocalDateTime.now();
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime updateAt = LocalDateTime.now();
+    public Integer frendNumber = 0;
+    public Integer groupNumber = 0;
+    public Integer postNumber = 0;
 
     @Transient
     private MultipartFile imagePart;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Utilisateur utilisateur;
+
+    @OneToMany(mappedBy = "proprietaire", cascade = {CascadeType.REMOVE})
+    private List<Annonce> annonces;
 
 
     @ManyToMany(cascade = {CascadeType.PERSIST})
@@ -73,7 +80,7 @@ public class Account {
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JsonIgnore
-    private List<Group> groups;
+    private List<Group> groups = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.DETACH)
     private Filiere filiere;

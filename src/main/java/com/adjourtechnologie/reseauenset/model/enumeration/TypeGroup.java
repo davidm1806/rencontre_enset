@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum TypeGroup {
-    ROOT(1,"ROOT", "Ensemble des étudiants de l'enset"),
+    ROOT(1,"ENSET", "Ensemble des étudiants de l'enset"),
     DEPARTEMENT(2,"DEPARTEMENT", "Etudiant d'un même département"),
+    AUTRE(2,"AUTRE", "Ancien étudiant, nouveau étudiant"),
     PROMOTION(1,"PROMOTION", "Etudiants d'une même promotion");
 
     int id;

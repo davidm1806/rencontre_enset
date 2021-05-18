@@ -23,7 +23,7 @@ public class UtilisateurController {
     }
 
     @PostMapping("user_save")
-    public ResponseEntity<Utilisateur> utilisateurSave(@RequestBody Utilisateur utilisateur, BindingResult result) {
+    public ResponseEntity<Utilisateur> utilisateurSave(Utilisateur utilisateur, BindingResult result) {
         if(result.hasErrors())
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         return UtilisateurService.saveUser(utilisateur);

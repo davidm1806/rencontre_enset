@@ -7,15 +7,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class CookieUtil {
     public static void create(HttpServletResponse httpServletResponse, String name, String value, Boolean secure, Integer maxAge) {
-        Cookie cookie = new Cookie(name, value);
-        cookie.setSecure(secure);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(maxAge);
-        cookie.setPath("/");
-        httpServletResponse.addCookie(cookie);
+        try{
+            Cookie cookie = new Cookie(name, URLEncoder.encode( value, "UTF-8" ));
+            cookie.setSecure(secure);
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(maxAge);
+            cookie.setPath("/");
+            httpServletResponse.addCookie(cookie);
+        }catch (UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void clear(HttpServletResponse httpServletResponse,HttpServletRequest request, String name) throws IOException {

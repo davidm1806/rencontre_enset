@@ -55,13 +55,16 @@ public class UtilisateurServiceImplentation implements UtilisateurService {
             if(utilisateurRepository.findByUsername(utilisateur.getUsername()) != null)
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
 
+            if(utilisateur.getPassword() == null)
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+
             user = new Utilisateur();
         }
 
-        if(!utilisateur.getPassword().equals(utilisateur.getPasswordConfirm()))
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-
-        user.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
+        /*if(!utilisateur.getPassword().equals(utilisateur.getPasswordConfirm()))
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);*/
+        if(utilisateur.getPassword() != null)
+            user.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
         user.setUsername(utilisateur.getUsername());
         user.setUpdateAt(LocalDateTime.now());
         user.setPseudo(utilisateur.getPseudo());

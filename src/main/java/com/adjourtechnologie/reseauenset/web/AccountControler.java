@@ -26,7 +26,7 @@ public class AccountControler {
     }
 
     @PostMapping("account/save")
-    public ResponseEntity<Account> accountSave(Account account, BindingResult bindingResult) {
+    public ResponseEntity<Account> accountSave(@RequestBody Account account, BindingResult bindingResult) {
         if(bindingResult.hasErrors())
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         return accountService.saveAccount(account);
@@ -61,9 +61,20 @@ public class AccountControler {
         return accountService.findAllGroup();
     }
 
+    @GetMapping("group/find_by_type/{typeGroup}")
+    public List<Group> groupFindByTypeGroup(@PathVariable String typeGroup) {
+        return groupeRepository.findByTypeGroup(typeGroup);
+    }
+
     @DeleteMapping("group/delete/{id}")
     public void groupDelete(@PathVariable Long id) {
         groupeRepository.deleteById(id);
+    }
+
+
+    @GetMapping("account/find_by_id/{id}")
+    public ResponseEntity<Account> accountPage(@PathVariable Long id) {
+        return accountService.findById(id);
     }
 
 

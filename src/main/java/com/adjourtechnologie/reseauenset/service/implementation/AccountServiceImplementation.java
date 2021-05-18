@@ -50,7 +50,6 @@ public class AccountServiceImplementation implements AccountService {
             ac.setUpdateAt(LocalDateTime.now());
             ac.setFirst_name(account.getFirst_name());
             ac.setLast_name(account.getLast_name());
-            ac.setMatricule(account.getMatricule());
         } else {
             if(account.getUtilisateur() == null)
                 return ResponseEntity.notFound().build();
@@ -64,18 +63,22 @@ public class AccountServiceImplementation implements AccountService {
 
             ac.setFirst_name(account.getFirst_name());
             ac.setLast_name(account.getLast_name());
-            ac.setMatricule(account.getMatricule());
 
             ac = accountRepository.save(ac);
 
             Group primaryGroup = groupeRepository.findByName(Constantes.PRIMARY_GROUP);
-            if(primaryGroup != null)
+            if(primaryGroup != null) {
                 ac.getGroups().add(primaryGroup);
+                ac.groupNumber++;
+            }
 
             if(account.getPromotion() != null) {
-                Group promotionGroup = groupeRepository.findByName(account.getPromotion().toUpperCase() + " " + Constantes.SURFIXE_GROUP_PROMOTION);
-                if(promotionGroup != null)
+                //Group promotionGroup = groupeRepository.findByName(account.getPromotion().toUpperCase() + " " + Constantes.SURFIXE_GROUP_PROMOTION);
+                Group promotionGroup = groupeRepository.findByName(account.getPromotion());
+                if(promotionGroup != null) {
                     ac.getGroups().add(promotionGroup);
+                    ac.groupNumber++;
+                }
             }
 
             if(account.getFiliereId() != null) {
@@ -83,8 +86,10 @@ public class AccountServiceImplementation implements AccountService {
                 ac.setFiliere(filiere);
                 if(filiere != null && filiere.getDepartement() != null){
                     Group departmentGroup = groupeRepository.findByName(filiere.getDepartement().getName().toUpperCase());
-                    if(departmentGroup != null)
+                    if(departmentGroup != null) {
                         ac.getGroups().add(departmentGroup);
+                        ac.groupNumber++;
+                    }
                 }
             }
         }
@@ -96,15 +101,8 @@ public class AccountServiceImplementation implements AccountService {
         ac.setEmail(account.getEmail());
         ac.setFiliere(account.getFiliere());
         ac.setPhone(account.getPhone());
-        if (account.getImagePart() != null) {
-            try{
-                ac.setPhotoProfile(new String(account.getImagePart().getBytes()));
-                ac.setHasPhotoProfile(true);
-            } catch (IOException e){
-                e.getStackTrace();
-            }
-        }
         ac.setPromotion(account.getPromotion());
+        ac.setSexe(account.getSexe());
 
         return ResponseEntity.ok(accountRepository.save(ac));
     }
@@ -119,8 +117,10 @@ public class AccountServiceImplementation implements AccountService {
         Optional<Group> groupOptional = groupeRepository.findById(groupId);
         Optional<Account> accountOptional = accountRepository.findById(accountId);
 
-        if (groupOptional.isPresent() && accountOptional.isPresent())
+        if (groupOptional.isPresent() && accountOptional.isPresent()) {
             accountOptional.get().getGroups().add(groupOptional.get());
+            accountOptional.get().groupNumber++;
+        }
 
     }
 
@@ -129,8 +129,10 @@ public class AccountServiceImplementation implements AccountService {
         Optional<Group> groupOptional = groupeRepository.findById(groupId);
         Optional<Account> accountOptional = accountRepository.findById(accountId);
 
-        if (groupOptional.isPresent() && accountOptional.isPresent())
+        if (groupOptional.isPresent() && accountOptional.isPresent()) {
             accountOptional.get().getGroups().remove(groupOptional.get());
+            accountOptional.get().groupNumber--;
+        }
     }
 
 
@@ -150,11 +152,22 @@ public class AccountServiceImplementation implements AccountService {
         }
         gp.setName(group.getName());
         gp.setDescription(group.getDescription());
+        gp.setTypeGroup(group.getTypeGroup());
         return ResponseEntity.ok(groupeRepository.save(gp));
     }
 
     @Override
     public List<Group> findAllGroup() {
         return groupeRepository.findAll();
+    }
+
+
+    @Override
+    public ResponseEntity<Account> findById(Long id) {
+        Optional<Account> accountOptional = accountRepository.findById(id);
+        if(accountOptional.isEmpty())
+            return ResponseEntity.unprocessableEntity().build();
+
+        return ResponseEntity.ok(accountOptional.get());
     }
 }
