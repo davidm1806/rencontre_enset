@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.adjour-technologie</groupId>
 	<artifactId>reseau-enset</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>war</packaging>
 	<name>reseau-enset</name>
 	<description>Application web de rencontre pour les étudiants de l&apos;ENSET de Douala</description>
