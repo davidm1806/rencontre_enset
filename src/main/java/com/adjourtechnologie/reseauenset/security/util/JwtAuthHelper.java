@@ -27,7 +27,7 @@ public class JwtAuthHelper {
                 //.withExpiresAt(new Date(System.currentTimeMillis() + SecurityPrams.EXPIRATION_ONE_DAY))
                 .sign(Algorithm.HMAC256(SecurityPrams.SECRET));
 
-        CookieUtil.create(response, SecurityPrams.JWT_HEADER_NAME,SecurityPrams.HEADER_PREFIX+jwt,true, 1800 /*30min*/ );
-        //response.addHeader(SecurityPrams.JWT_HEADER_NAME, jwt);
+        //CookieUtil.create(response, SecurityPrams.JWT_HEADER_NAME,SecurityPrams.HEADER_PREFIX+jwt,true, 1800 /*30min*/ );
+        response.addHeader(SecurityPrams.JWT_HEADER_NAME, jwt);
     }
 }

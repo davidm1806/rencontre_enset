@@ -39,8 +39,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        //String jwtToken = request.getHeader(SecurityPrams.JWT_HEADER_NAME);
-        String jwtToken = CookieUtil.getValue(request, SecurityPrams.JWT_HEADER_NAME);
+        String jwtToken = request.getHeader(SecurityPrams.JWT_HEADER_NAME);
+        //String jwtToken = CookieUtil.getValue(request, SecurityPrams.JWT_HEADER_NAME);
 
 
 
