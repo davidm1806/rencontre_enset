@@ -22,6 +22,8 @@ public class JwtAuthHelper {
                 .withIssuer(request.getRequestURI())
                 .withSubject(user.getUsername())
                 .withClaim("name", user.getPseudo())
+                .withClaim("id", user.getId())
+                .withClaim("accountId", user.getAccountId())
                 .withClaim("activated", user.isActived())
                 .withArrayClaim("roles", roles.toArray(new String[roles.size()]))
                 //.withExpiresAt(new Date(System.currentTimeMillis() + SecurityPrams.EXPIRATION_ONE_DAY))

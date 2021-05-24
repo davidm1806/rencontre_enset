@@ -7,7 +7,9 @@ import com.adjourtechnologie.reseauenset.model.Utilisateur;
 import com.adjourtechnologie.reseauenset.repository.AccountRepository;
 import com.adjourtechnologie.reseauenset.repository.FiliereRepository;
 import com.adjourtechnologie.reseauenset.repository.GroupeRepository;
+import com.adjourtechnologie.reseauenset.repository.UtilisateurRepository;
 import com.adjourtechnologie.reseauenset.service.AccountService;
+import com.adjourtechnologie.reseauenset.service.IAuthenticationFacade;
 import com.adjourtechnologie.reseauenset.service.UtilisateurService;
 import com.adjourtechnologie.reseauenset.utils.Constantes;
 import org.springframework.data.domain.Page;
@@ -29,14 +31,21 @@ public class AccountServiceImplementation implements AccountService {
     private final UtilisateurService utilisateurService;
     private final GroupeRepository groupeRepository;
     private final FiliereRepository filiereRepository;
+    private final IAuthenticationFacade iAuthenticationFacade;
+    private final UtilisateurRepository utilisateurRepository;
 
     public AccountServiceImplementation(AccountRepository accountRepository,
                                         FiliereRepository filiereRepository,
-                                        UtilisateurService utilisateurService, GroupeRepository groupeRepository) {
+                                        UtilisateurService utilisateurService,
+                                        UtilisateurRepository utilisateurRepository,
+                                        IAuthenticationFacade iAuthenticationFacade,
+                                        GroupeRepository groupeRepository) {
         this.accountRepository = accountRepository;
         this.utilisateurService = utilisateurService;
         this.groupeRepository = groupeRepository;
         this.filiereRepository = filiereRepository;
+        this.iAuthenticationFacade = iAuthenticationFacade;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
     @Override
@@ -58,13 +67,19 @@ public class AccountServiceImplementation implements AccountService {
             if(!utilisateurResponseEntity.hasBody())
                 return new ResponseEntity<>(utilisateurResponseEntity.getStatusCode());
 
+            Utilisateur u = utilisateurResponseEntity.getBody();
+
             ac = new Account();
-            ac.setUtilisateur(utilisateurResponseEntity.getBody());
+            ac.setUtilisateur(u);
 
             ac.setFirst_name(account.getFirst_name());
             ac.setLast_name(account.getLast_name());
 
             ac = accountRepository.save(ac);
+
+            u.setAccountId(ac.getId());
+
+            utilisateurRepository.save(u);
 
             Group primaryGroup = groupeRepository.findByName(Constantes.PRIMARY_GROUP);
             if(primaryGroup != null) {
@@ -164,10 +179,15 @@ public class AccountServiceImplementation implements AccountService {
 
     @Override
     public ResponseEntity<Account> findById(Long id) {
-        Optional<Account> accountOptional = accountRepository.findById(id);
-        if(accountOptional.isEmpty())
+        Account account = accountRepository.findAccount(id);
+        if(account==null)
             return ResponseEntity.unprocessableEntity().build();
 
-        return ResponseEntity.ok(accountOptional.get());
+        return ResponseEntity.ok(account);
+    }
+
+    @Override
+    public List<Group> findGroupByAccount(Long accountId) {
+        return groupeRepository.groupByAccount(accountId);
     }
 }

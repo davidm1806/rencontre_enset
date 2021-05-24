@@ -47,6 +47,8 @@ public class Utilisateur implements UserDetails {
     private LocalDateTime updateAt = LocalDateTime.now();
     private boolean isOnline;
 
+    private Long accountId;
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE})
     private Set<AppRole> appRoles = new HashSet<>();

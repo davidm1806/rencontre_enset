@@ -78,6 +78,12 @@ public class AccountControler {
     }
 
 
+    @GetMapping("group/find_by_account_id/{account_id}")
+    public List<Group> findGroupByAccount(@PathVariable Long account_id) {
+        return accountService.findGroupByAccount(account_id);
+    }
+
+
     @PostMapping("success")
     public void success() {
 

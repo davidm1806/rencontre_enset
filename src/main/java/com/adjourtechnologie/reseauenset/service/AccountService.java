@@ -19,4 +19,8 @@ public interface AccountService {
 
     ResponseEntity<Group> saveGroup(Group group);
     List<Group> findAllGroup();
+
+    List<Group> findGroupByAccount(Long accountId);
+
+
 }
