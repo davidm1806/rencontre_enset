@@ -56,10 +56,10 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(SecurityPrams.SECRET)).build();
         DecodedJWT decodedJWT = jwtVerifier.verify(jwt);
 
-        if (!decodedJWT.getClaim("activated").asBoolean() || decodedJWT.getClaim("loocked").asBoolean()) {
+        /*if (!decodedJWT.getClaim("activated").asBoolean() || decodedJWT.getClaim("loocked").asBoolean()) {
             filterChain.doFilter(request, response);
             return;
-        }
+        }*/
 
         // System.out.println("JWT=" + jwt);
         String username = decodedJWT.getSubject();

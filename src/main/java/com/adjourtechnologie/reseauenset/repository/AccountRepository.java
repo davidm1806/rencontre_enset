@@ -11,4 +11,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Page<Account> findAllAccount(Pageable pageable);
     @Query("select a from Account a where a.utilisateur.id= :utilisateurId")
     Account findAccount(Long utilisateurId);
+
+    @Query("select a from Account  a where a.utilisateur.username = :username")
+    Account findByUserName(String username);
 }

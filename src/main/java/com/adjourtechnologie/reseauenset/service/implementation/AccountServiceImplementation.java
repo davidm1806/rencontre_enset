@@ -190,4 +190,13 @@ public class AccountServiceImplementation implements AccountService {
     public List<Group> findGroupByAccount(Long accountId) {
         return groupeRepository.groupByAccount(accountId);
     }
+
+
+    @Override
+    public ResponseEntity<Group> findGroupById(Long groupId) {
+        Optional<Group> optionalGroup = groupeRepository.findById(groupId);
+        if(optionalGroup.isEmpty())
+            return ResponseEntity.unprocessableEntity().build();
+        return ResponseEntity.ok(optionalGroup.get());
+    }
 }

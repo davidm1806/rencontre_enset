@@ -22,5 +22,7 @@ public interface AccountService {
 
     List<Group> findGroupByAccount(Long accountId);
 
+    ResponseEntity<Group> findGroupById(Long groupId);
+
 
 }
