@@ -16,7 +16,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * date: 2021
@@ -80,7 +82,7 @@ public class Account {
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JsonIgnore
-    private List<Group> groups = new ArrayList<>();
+    private Set<Group> groups = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.DETACH)
     private Filiere filiere;

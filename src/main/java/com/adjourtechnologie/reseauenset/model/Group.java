@@ -26,6 +26,7 @@ public class Group {
     private Long id;
     @NotNull
     @Column(unique = true)
+    @EqualsAndHashCode.Include
     private String name;
     private String description;
     private String typeGroup;
