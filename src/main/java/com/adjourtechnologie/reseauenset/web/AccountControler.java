@@ -64,15 +64,15 @@ public class AccountControler {
     }
 
 
-    @GetMapping("account/add_account_to_group/{accountId}/{groupId}")
-    public void addAccountToGroup(@PathVariable("accountId") Long accountId, @PathVariable("groupId") Long groupId) {
-        accountService.addAccountToGroup(accountId, groupId);
+    @GetMapping("account/add_account_to_group/{matricule}/{groupId}")
+    public ResponseEntity<?> addAccountToGroup(@PathVariable("matricule") String matricule, @PathVariable("groupId") Long groupId) {
+        return accountService.addAccountToGroup(matricule, groupId);
     }
 
 
-    @GetMapping("account/remouve_account_to_group/{accountId}/{groupId}")
-    public void removeAccountToGroup(@PathVariable("accountId") Long accountId, @PathVariable("groupId") Long groupId) {
-        accountService.removeAccountFromGroup(accountId, groupId);
+    @GetMapping("account/remouve_account_to_group/{matricule}/{groupId}")
+    public ResponseEntity<?> removeAccountToGroup(@PathVariable("matricule") String matricule, @PathVariable("groupId") Long groupId) {
+        return accountService.removeAccountFromGroup(matricule, groupId);
     }
 
     @PostMapping("group/save")

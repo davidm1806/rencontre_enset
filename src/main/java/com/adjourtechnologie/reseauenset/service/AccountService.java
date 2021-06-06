@@ -14,8 +14,8 @@ public interface AccountService {
     Page<Account> findAll(Pageable pageable);
     ResponseEntity<Account> findById(Long id);
 
-    void addAccountToGroup(@NonNull Long accountId, @NonNull  Long groupId);
-    void removeAccountFromGroup(@NonNull Long accountId, @NonNull  Long groupId);
+    ResponseEntity<?> addAccountToGroup(@NonNull String matricule, @NonNull  Long groupId);
+    ResponseEntity<?> removeAccountFromGroup(@NonNull String matricule, @NonNull  Long groupId);
 
     ResponseEntity<Group> saveGroup(Group group);
     List<Group> findAllGroup();

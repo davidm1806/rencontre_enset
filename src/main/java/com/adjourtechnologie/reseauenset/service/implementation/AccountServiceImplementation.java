@@ -128,26 +128,32 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public void addAccountToGroup(@NonNull Long accountId, @NonNull Long groupId) {
+    public ResponseEntity<?> addAccountToGroup(@NonNull String matricule, @NonNull Long groupId) {
         Optional<Group> groupOptional = groupeRepository.findById(groupId);
-        Optional<Account> accountOptional = accountRepository.findById(accountId);
+        Account account = accountRepository.findByUserName(matricule);
 
-        if (groupOptional.isPresent() && accountOptional.isPresent()) {
-            accountOptional.get().getGroups().add(groupOptional.get());
-            accountOptional.get().groupNumber++;
-        }
+        if(account == null || groupOptional.isEmpty())
+            return ResponseEntity.unprocessableEntity().build();
+
+        account.getGroups().add(groupOptional.get());
+        account.setGroupNumber(account.getGroups().size());
+
+        return ResponseEntity.ok().build();
 
     }
 
     @Override
-    public void removeAccountFromGroup(Long accountId, Long groupId) {
+    public ResponseEntity<?> removeAccountFromGroup(String matricule, Long groupId) {
         Optional<Group> groupOptional = groupeRepository.findById(groupId);
-        Optional<Account> accountOptional = accountRepository.findById(accountId);
+        Account account = accountRepository.findByUserName(matricule);
 
-        if (groupOptional.isPresent() && accountOptional.isPresent()) {
-            accountOptional.get().getGroups().remove(groupOptional.get());
-            accountOptional.get().groupNumber--;
-        }
+        if(account == null || groupOptional.isEmpty())
+            return ResponseEntity.unprocessableEntity().build();
+
+        account.getGroups().removeIf(g->g.getId().equals(groupOptional.get().getId()));
+        account.setGroupNumber(account.getGroups().size());
+
+        return ResponseEntity.ok().build();
     }
 
 
