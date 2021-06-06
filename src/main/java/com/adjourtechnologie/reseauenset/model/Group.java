@@ -44,7 +44,7 @@ public class Group {
     private List<Message> messages = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "groups")
-    @JsonIgnore
+    //@JsonIgnore
     private List<Account> membres;
 
     @OneToMany(mappedBy = "group", cascade = {CascadeType.REMOVE})
